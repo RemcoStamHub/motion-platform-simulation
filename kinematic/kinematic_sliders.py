@@ -210,10 +210,10 @@ def update(val):
             color='green')
 
     at.axis('off')
-    at.table(cellText=np.array([[("{:.2f}".format(l_0))],
-                                [("{:.2f}".format(l_1))],
-                                [("{:.2f}".format(l_2))],
-                                [("{:.2f}".format(l_3))]]),
+    at.table(cellText=np.array([[("{:.3f}".format(l_0))],
+                                [("{:.3f}".format(l_1))],
+                                [("{:.3f}".format(l_2))],
+                                [("{:.3f}".format(l_3))]]),
              rowLabels=('l0', 'l1', 'l2', 'l3'), loc='top', bbox=[0, 0, 1, 1])
 
     fig.canvas.draw_idle()
