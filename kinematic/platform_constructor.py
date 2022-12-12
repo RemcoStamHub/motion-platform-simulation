@@ -113,8 +113,8 @@ class Example(Platform):
         self.ground_height = 2
         self.motion_length = 1
         self.motion_width = 0.7
-        self.roll_yaw_x = 0.3
-        self.roll_yaw_z = 0.3
+        self.roll_yaw_x = 0.5
+        self.roll_yaw_z = 0.3     # 0.3
         self.pitch_x = 0.5
         self.pitch_z = 0
         self.roll = 0
