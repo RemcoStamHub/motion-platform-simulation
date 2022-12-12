@@ -112,47 +112,47 @@ class Platform:
         length_3 = np.linalg.norm(self.platform_point_3_reference_frame - self.ground_point_3_reference_frame)
         return length_0, length_1, length_2, length_3
 
-    def actuator_speeds(self, rollspeed):
+    def actuator_speeds(self, rollspeed, pitchspeed, yawspeed):
         radius_0 = self.platform_point_0_reference_frame - self.roll_yaw_point_reference_frame
-        v_point_0 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_0)
+        v_point_0 = np.cross(np.array([np.deg2rad(rollspeed), np.deg2rad(pitchspeed), np.deg2rad(yawspeed)]), radius_0)
         actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
         speed_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), v_point_0)
 
         radius_1 = self.platform_point_1_reference_frame - self.roll_yaw_point_reference_frame
-        v_point_1 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_1)
+        v_point_1 = np.cross(np.array([np.deg2rad(rollspeed), np.deg2rad(pitchspeed), np.deg2rad(yawspeed)]), radius_1)
         actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
         speed_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), v_point_1)
 
         radius_2 = self.platform_point_2_reference_frame - self.roll_yaw_point_reference_frame
-        v_point_2 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_2)
+        v_point_2 = np.cross(np.array([np.deg2rad(rollspeed), np.deg2rad(pitchspeed), np.deg2rad(yawspeed)]), radius_2)
         actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
         speed_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), v_point_2)
 
         radius_3 = self.platform_point_3_reference_frame - self.roll_yaw_point_reference_frame
-        v_point_3 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_3)
+        v_point_3 = np.cross(np.array([np.deg2rad(rollspeed), np.deg2rad(pitchspeed), np.deg2rad(yawspeed)]), radius_3)
         actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
         speed_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), v_point_3)
 
         return speed_0, speed_1, speed_2, speed_3
 
-    def actuator_accelerations(self, rollacceleration):
+    def actuator_accelerations(self, rollacceleration, pitchacceleration, yawacceleration):
         radius_0 = self.platform_point_0_reference_frame - self.roll_yaw_point_reference_frame
-        a_point_0 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_0)
+        a_point_0 = np.cross(np.array([np.deg2rad(rollacceleration), np.deg2rad(pitchacceleration), np.deg2rad(yawacceleration)]), radius_0)
         actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
         acceleration_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), a_point_0)
 
         radius_1 = self.platform_point_1_reference_frame - self.roll_yaw_point_reference_frame
-        a_point_1 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_1)
+        a_point_1 = np.cross(np.array([np.deg2rad(rollacceleration), np.deg2rad(pitchacceleration), np.deg2rad(yawacceleration)]), radius_1)
         actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
         acceleration_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), a_point_1)
 
         radius_2 = self.platform_point_2_reference_frame - self.roll_yaw_point_reference_frame
-        a_point_2 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_2)
+        a_point_2 = np.cross(np.array([np.deg2rad(rollacceleration), np.deg2rad(pitchacceleration), np.deg2rad(yawacceleration)]), radius_2)
         actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
         acceleration_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), a_point_2)
 
         radius_3 = self.platform_point_3_reference_frame - self.roll_yaw_point_reference_frame
-        a_point_3 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_3)
+        a_point_3 = np.cross(np.array([np.deg2rad(rollacceleration), np.deg2rad(pitchacceleration), np.deg2rad(yawacceleration)]), radius_3)
         actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
         acceleration_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), a_point_3)
 
@@ -185,13 +185,13 @@ class Platform:
             length_2_values.append(length_2)
             length_3_values.append(length_3)
 
-            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(rollspeed)
+            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(rollspeed, 0, 0)
             speed_0_values.append(speed_0)
             speed_1_values.append(speed_1)
             speed_2_values.append(speed_2)
             speed_3_values.append(speed_3)
 
-            acceleration_0, acceleration_1, acceleration_2, acceleration_3 = self.actuator_accelerations(rollacceleration)
+            acceleration_0, acceleration_1, acceleration_2, acceleration_3 = self.actuator_accelerations(rollacceleration, 0, 0)
             acceleration_0_values.append(acceleration_0)
             acceleration_1_values.append(acceleration_1)
             acceleration_2_values.append(acceleration_2)
@@ -201,14 +201,101 @@ class Platform:
                 length_0_values, length_1_values, length_2_values, length_3_values,
                 speed_0_values, speed_1_values, speed_2_values, speed_3_values,
                 acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values)
+    
+    def pitch_platform_limits(self, pitchmin, pitchmax, pitchspeed, pitchacceleration, resolution):
+        pitch_values = []
+        length_0_values = []
+        length_1_values = []
+        length_2_values = []
+        length_3_values = []
+        speed_0_values = []
+        speed_1_values = []
+        speed_2_values = []
+        speed_3_values = []
+        acceleration_0_values = []
+        acceleration_1_values = []
+        acceleration_2_values = []
+        acceleration_3_values = []
 
+        for pitch in np.arange(pitchmin, pitchmax, resolution):
+            self.pitch = pitch
+            self.build_system()
+            self.move_system()
+            pitch_values.append(pitch)
+
+            length_0, length_1, length_2, length_3 = self.actuator_lengths()
+            length_0_values.append(length_0)
+            length_1_values.append(length_1)
+            length_2_values.append(length_2)
+            length_3_values.append(length_3)
+
+            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(0, pitchspeed, 0)
+            speed_0_values.append(speed_0)
+            speed_1_values.append(speed_1)
+            speed_2_values.append(speed_2)
+            speed_3_values.append(speed_3)
+
+            acceleration_0, acceleration_1, acceleration_2, acceleration_3 = self.actuator_accelerations(0, pitchacceleration, 0)
+            acceleration_0_values.append(acceleration_0)
+            acceleration_1_values.append(acceleration_1)
+            acceleration_2_values.append(acceleration_2)
+            acceleration_3_values.append(acceleration_3)
+
+        return (pitch_values,
+                length_0_values, length_1_values, length_2_values, length_3_values,
+                speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+                acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values)
+
+    def yaw_platform_limits(self, yawmin, yawmax, yawspeed, yawacceleration, resolution):
+        yaw_values = []
+        length_0_values = []
+        length_1_values = []
+        length_2_values = []
+        length_3_values = []
+        speed_0_values = []
+        speed_1_values = []
+        speed_2_values = []
+        speed_3_values = []
+        acceleration_0_values = []
+        acceleration_1_values = []
+        acceleration_2_values = []
+        acceleration_3_values = []
+
+        for yaw in np.arange(yawmin, yawmax, resolution):
+            self.yaw = yaw
+            self.build_system()
+            self.move_system()
+            yaw_values.append(yaw)
+
+            length_0, length_1, length_2, length_3 = self.actuator_lengths()
+            length_0_values.append(length_0)
+            length_1_values.append(length_1)
+            length_2_values.append(length_2)
+            length_3_values.append(length_3)
+
+            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(0, 0, yawspeed)
+            speed_0_values.append(speed_0)
+            speed_1_values.append(speed_1)
+            speed_2_values.append(speed_2)
+            speed_3_values.append(speed_3)
+
+            acceleration_0, acceleration_1, acceleration_2, acceleration_3 = self.actuator_accelerations(0, 0, yawacceleration)
+            acceleration_0_values.append(acceleration_0)
+            acceleration_1_values.append(acceleration_1)
+            acceleration_2_values.append(acceleration_2)
+            acceleration_3_values.append(acceleration_3)
+
+        return (yaw_values,
+                length_0_values, length_1_values, length_2_values, length_3_values,
+                speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+                acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values)
 
 class Example(Platform):
     def __init__(self):
-        self.ground_length = 1
+        self.ground_length = 1.5  # 1
         self.ground_width = 1
-        self.ground_height = 2
-        self.motion_length = 1
+        self.ground_height = 0  # 0
+        self.motion_length = 1.5  # 1
         self.motion_width = 0.7
         self.roll_yaw_x = 0.5
         self.roll_yaw_z = 0.3  # 0.3
