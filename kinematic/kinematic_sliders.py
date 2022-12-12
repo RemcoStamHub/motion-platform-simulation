@@ -120,10 +120,7 @@ def update(val):
 
     new_platform.move_system()
 
-    l_0 = np.linalg.norm(new_platform.platform_point_0_reference_frame - new_platform.ground_point_0_reference_frame)
-    l_1 = np.linalg.norm(new_platform.platform_point_1_reference_frame - new_platform.ground_point_1_reference_frame)
-    l_2 = np.linalg.norm(new_platform.platform_point_2_reference_frame - new_platform.ground_point_2_reference_frame)
-    l_3 = np.linalg.norm(new_platform.platform_point_3_reference_frame - new_platform.ground_point_3_reference_frame)
+    l_0, l_1, l_2, l_3 = new_platform.actuator_lengths()
 
     ax.cla()
     at.cla()

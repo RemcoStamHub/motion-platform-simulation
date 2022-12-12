@@ -29,10 +29,10 @@ class Platform:
         self.platform_point_3_motion_frame = []
         self.pitch_point_motion_frame = []
         self.roll_yaw_point_motion_frame = []
-        self.platform_point_0_reference_frame = []
-        self.platform_point_1_reference_frame = []
-        self.platform_point_2_reference_frame = []
-        self.platform_point_3_reference_frame = []
+        self.platform_point_0_reference_frame = np.array([])
+        self.platform_point_1_reference_frame = np.array([])
+        self.platform_point_2_reference_frame = np.array([])
+        self.platform_point_3_reference_frame = np.array([])
         self.pitch_point_reference_frame = []
         self.roll_yaw_point_reference_frame = []
 
@@ -105,6 +105,103 @@ class Platform:
         self.pitch_point_reference_frame = self.calculate_position(self.pitch_point_motion_frame)
         self.roll_yaw_point_reference_frame = self.calculate_position(self.roll_yaw_point_motion_frame)
 
+    def actuator_lengths(self):
+        length_0 = np.linalg.norm(self.platform_point_0_reference_frame - self.ground_point_0_reference_frame)
+        length_1 = np.linalg.norm(self.platform_point_1_reference_frame - self.ground_point_1_reference_frame)
+        length_2 = np.linalg.norm(self.platform_point_2_reference_frame - self.ground_point_2_reference_frame)
+        length_3 = np.linalg.norm(self.platform_point_3_reference_frame - self.ground_point_3_reference_frame)
+        return length_0, length_1, length_2, length_3
+
+    def actuator_speeds(self, rollspeed):
+        radius_0 = self.platform_point_0_reference_frame - self.roll_yaw_point_reference_frame
+        v_point_0 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_0)
+        actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
+        speed_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), v_point_0)
+
+        radius_1 = self.platform_point_1_reference_frame - self.roll_yaw_point_reference_frame
+        v_point_1 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_1)
+        actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
+        speed_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), v_point_1)
+
+        radius_2 = self.platform_point_2_reference_frame - self.roll_yaw_point_reference_frame
+        v_point_2 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_2)
+        actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
+        speed_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), v_point_2)
+
+        radius_3 = self.platform_point_3_reference_frame - self.roll_yaw_point_reference_frame
+        v_point_3 = np.cross(np.array([np.deg2rad(rollspeed), 0, 0]), radius_3)
+        actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
+        speed_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), v_point_3)
+
+        return speed_0, speed_1, speed_2, speed_3
+
+    def actuator_accelerations(self, rollacceleration):
+        radius_0 = self.platform_point_0_reference_frame - self.roll_yaw_point_reference_frame
+        a_point_0 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_0)
+        actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
+        acceleration_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), a_point_0)
+
+        radius_1 = self.platform_point_1_reference_frame - self.roll_yaw_point_reference_frame
+        a_point_1 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_1)
+        actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
+        acceleration_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), a_point_1)
+
+        radius_2 = self.platform_point_2_reference_frame - self.roll_yaw_point_reference_frame
+        a_point_2 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_2)
+        actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
+        acceleration_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), a_point_2)
+
+        radius_3 = self.platform_point_3_reference_frame - self.roll_yaw_point_reference_frame
+        a_point_3 = np.cross(np.array([np.deg2rad(rollacceleration), 0, 0]), radius_3)
+        actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
+        acceleration_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), a_point_3)
+
+        return acceleration_0, acceleration_1, acceleration_2, acceleration_3
+
+    def roll_platform_limits(self, rollmin, rollmax, rollspeed, rollacceleration, resolution):
+        roll_values = []
+        length_0_values = []
+        length_1_values = []
+        length_2_values = []
+        length_3_values = []
+        speed_0_values = []
+        speed_1_values = []
+        speed_2_values = []
+        speed_3_values = []
+        acceleration_0_values = []
+        acceleration_1_values = []
+        acceleration_2_values = []
+        acceleration_3_values = []
+
+        for roll in np.arange(rollmin, rollmax, resolution):
+            self.roll = roll
+            self.build_system()
+            self.move_system()
+            roll_values.append(roll)
+
+            length_0, length_1, length_2, length_3 = self.actuator_lengths()
+            length_0_values.append(length_0)
+            length_1_values.append(length_1)
+            length_2_values.append(length_2)
+            length_3_values.append(length_3)
+
+            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(rollspeed)
+            speed_0_values.append(speed_0)
+            speed_1_values.append(speed_1)
+            speed_2_values.append(speed_2)
+            speed_3_values.append(speed_3)
+
+            acceleration_0, acceleration_1, acceleration_2, acceleration_3 = self.actuator_accelerations(rollacceleration)
+            acceleration_0_values.append(acceleration_0)
+            acceleration_1_values.append(acceleration_1)
+            acceleration_2_values.append(acceleration_2)
+            acceleration_3_values.append(acceleration_3)
+
+        return (roll_values,
+                length_0_values, length_1_values, length_2_values, length_3_values,
+                speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+                acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values)
+
 
 class Example(Platform):
     def __init__(self):
@@ -114,7 +211,7 @@ class Example(Platform):
         self.motion_length = 1
         self.motion_width = 0.7
         self.roll_yaw_x = 0.5
-        self.roll_yaw_z = 0.3     # 0.3
+        self.roll_yaw_z = 0.3  # 0.3
         self.pitch_x = 0.5
         self.pitch_z = 0
         self.roll = 0
