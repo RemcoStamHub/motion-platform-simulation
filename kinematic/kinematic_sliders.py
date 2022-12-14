@@ -125,7 +125,7 @@ def update(val):
     ax.cla()
     at.cla()
 
-    ax.set_xlim3d(-0.5, 3.5)
+    ax.set_xlim3d(-1.5, 2.5)
     ax.set_ylim3d(-2, 2)
     ax.set_zlim3d(0, 4)
 
@@ -145,6 +145,27 @@ def update(val):
                new_platform.ground_point_3_reference_frame[1],
                new_platform.ground_point_3_reference_frame[2],
                color='red', s=100)
+
+    ax.text(new_platform.ground_point_0_reference_frame[0],
+            new_platform.ground_point_0_reference_frame[1],
+            new_platform.ground_point_0_reference_frame[2]+0.2,
+            '0',
+            color='black')
+    ax.text(new_platform.ground_point_1_reference_frame[0],
+            new_platform.ground_point_1_reference_frame[1],
+            new_platform.ground_point_1_reference_frame[2]+0.2,
+            '1',
+            color='black')
+    ax.text(new_platform.ground_point_2_reference_frame[0],
+            new_platform.ground_point_2_reference_frame[1],
+            new_platform.ground_point_2_reference_frame[2]+0.2,
+            '2',
+            color='black')
+    ax.text(new_platform.ground_point_3_reference_frame[0],
+            new_platform.ground_point_3_reference_frame[1],
+            new_platform.ground_point_3_reference_frame[2]+0.2,
+            '3',
+            color='black')
 
     ax.scatter(new_platform.pitch_point_reference_frame[0],
                new_platform.pitch_point_reference_frame[1],

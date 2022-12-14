@@ -292,13 +292,13 @@ class Platform:
 
 class Example(Platform):
     def __init__(self):
-        self.ground_length = 1.5  # 1
-        self.ground_width = 1
+        self.ground_length = 1  # 1
+        self.ground_width = 1.2
         self.ground_height = 0  # 0
-        self.motion_length = 1.5  # 1
-        self.motion_width = 0.7
-        self.roll_yaw_x = 0.5
-        self.roll_yaw_z = 0.3  # 0.3
+        self.motion_length = 1  # 1
+        self.motion_width = 1
+        self.roll_yaw_x = 0.9
+        self.roll_yaw_z = 0.2  # 0.3
         self.pitch_x = 0.5
         self.pitch_z = 0
         self.roll = 0
