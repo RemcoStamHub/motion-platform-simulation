@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.pyplot as plt
 from platform_constructor import Platform, Example
 
@@ -84,8 +83,11 @@ ax11.set_ylabel('acceleration (m/s^2)')
 def plot_roll():
     roll_platform = Example()
 
-    roll_values, length_0_values, length_1_values, length_2_values, length_3_values, speed_0_values, speed_1_values, speed_2_values, speed_3_values, acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values = roll_platform.roll_platform_limits(
-        -roll_range, roll_range, roll_speed, roll_acceleration, 0.1)
+    (roll_values,
+     length_0_values, length_1_values, length_2_values, length_3_values,
+     speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+     acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values
+     ) = roll_platform.roll_platform_limits(-roll_range, roll_range, roll_speed, roll_acceleration, 0.1)
 
     plot_label = 'roll'
     ax0.plot(roll_values, length_0_values, label=plot_label)
@@ -105,7 +107,11 @@ def plot_roll():
 def plot_pitch():
     pitch_platform = Example()
 
-    pitch_values, length_0_values, length_1_values, length_2_values, length_3_values, speed_0_values, speed_1_values, speed_2_values, speed_3_values, acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values = pitch_platform.pitch_platform_limits(
+    (pitch_values,
+     length_0_values, length_1_values, length_2_values, length_3_values,
+     speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+     acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values
+     ) = pitch_platform.pitch_platform_limits(
         -pitch_range, pitch_range, pitch_speed, pitch_acceleration, 0.1)
 
     plot_label = 'pitch'
@@ -126,8 +132,11 @@ def plot_pitch():
 def plot_yaw():
     yaw_platform = Example()
 
-    yaw_values, length_0_values, length_1_values, length_2_values, length_3_values, speed_0_values, speed_1_values, speed_2_values, speed_3_values, acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values = yaw_platform.yaw_platform_limits(
-        -yaw_range, yaw_range, yaw_speed, yaw_acceleration, 0.1)
+    (yaw_values,
+     length_0_values, length_1_values, length_2_values, length_3_values,
+     speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+     acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values
+     ) = yaw_platform.yaw_platform_limits(-yaw_range, yaw_range, yaw_speed, yaw_acceleration, 0.1)
 
     plot_label = 'yaw'
     ax0.plot(yaw_values, length_0_values, label=plot_label)
