@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
-from platform_constructor import Platform, Example
+from platform_constructor import Example
 
 new_platform = Example()
 slider_x = 0.10

@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from platform_constructor import Platform, Example
+from platform_constructor import Example
 
 step = 0.1
 
