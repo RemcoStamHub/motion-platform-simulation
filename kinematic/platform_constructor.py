@@ -272,20 +272,23 @@ class Platform:
             length_2_values.append(length_2)
             length_3_values.append(length_3)
 
-            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(rollspeed, 0, 0, self.roll_yaw_point_reference_frame)
+            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(rollspeed, 0, 0,
+                                                                      self.roll_yaw_point_reference_frame)
             speed_0_values.append(speed_0)
             speed_1_values.append(speed_1)
             speed_2_values.append(speed_2)
             speed_3_values.append(speed_3)
 
             (acceleration_0, acceleration_1,
-             acceleration_2, acceleration_3) = self.actuator_accelerations(rollacceleration, 0, 0, self.roll_yaw_point_reference_frame)
+             acceleration_2, acceleration_3) = self.actuator_accelerations(rollacceleration, 0, 0,
+                                                                           self.roll_yaw_point_reference_frame)
             acceleration_0_values.append(acceleration_0)
             acceleration_1_values.append(acceleration_1)
             acceleration_2_values.append(acceleration_2)
             acceleration_3_values.append(acceleration_3)
 
-            force_0, force_1, force_2, force_3 = self.actuator_forces(rollspeed, 0, 0, rollacceleration, 0, 0, self.roll_yaw_point_reference_frame)
+            force_0, force_1, force_2, force_3 = self.actuator_forces(rollspeed, 0, 0, rollacceleration, 0, 0,
+                                                                      self.roll_yaw_point_reference_frame)
             force_0_values.append(force_0)
             force_1_values.append(force_1)
             force_2_values.append(force_2)
@@ -328,20 +331,23 @@ class Platform:
             length_2_values.append(length_2)
             length_3_values.append(length_3)
 
-            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(0, pitchspeed, 0, self.pitch_point_reference_frame)
+            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(0, pitchspeed, 0,
+                                                                      self.pitch_point_reference_frame)
             speed_0_values.append(speed_0)
             speed_1_values.append(speed_1)
             speed_2_values.append(speed_2)
             speed_3_values.append(speed_3)
 
             (acceleration_0, acceleration_1,
-             acceleration_2, acceleration_3) = self.actuator_accelerations(0, pitchacceleration, 0, self.pitch_point_reference_frame)
+             acceleration_2, acceleration_3) = self.actuator_accelerations(0, pitchacceleration, 0,
+                                                                           self.pitch_point_reference_frame)
             acceleration_0_values.append(acceleration_0)
             acceleration_1_values.append(acceleration_1)
             acceleration_2_values.append(acceleration_2)
             acceleration_3_values.append(acceleration_3)
 
-            force_0, force_1, force_2, force_3 = self.actuator_forces(0, pitchspeed, 0, 0, pitchacceleration, 0, self.pitch_point_reference_frame)
+            force_0, force_1, force_2, force_3 = self.actuator_forces(0, pitchspeed, 0, 0, pitchacceleration, 0,
+                                                                      self.pitch_point_reference_frame)
             force_0_values.append(force_0)
             force_1_values.append(force_1)
             force_2_values.append(force_2)
@@ -384,20 +390,23 @@ class Platform:
             length_2_values.append(length_2)
             length_3_values.append(length_3)
 
-            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(0, 0, yawspeed, self.roll_yaw_point_reference_frame)
+            speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(0, 0, yawspeed,
+                                                                      self.roll_yaw_point_reference_frame)
             speed_0_values.append(speed_0)
             speed_1_values.append(speed_1)
             speed_2_values.append(speed_2)
             speed_3_values.append(speed_3)
 
             (acceleration_0, acceleration_1,
-             acceleration_2, acceleration_3) = self.actuator_accelerations(0, 0, yawacceleration, self.roll_yaw_point_reference_frame)
+             acceleration_2, acceleration_3) = self.actuator_accelerations(0, 0, yawacceleration,
+                                                                           self.roll_yaw_point_reference_frame)
             acceleration_0_values.append(acceleration_0)
             acceleration_1_values.append(acceleration_1)
             acceleration_2_values.append(acceleration_2)
             acceleration_3_values.append(acceleration_3)
 
-            force_0, force_1, force_2, force_3 = self.actuator_forces(0, 0, yawspeed, 0, 0, yawacceleration, self.roll_yaw_point_reference_frame)
+            force_0, force_1, force_2, force_3 = self.actuator_forces(0, 0, yawspeed, 0, 0, yawacceleration,
+                                                                      self.roll_yaw_point_reference_frame)
             force_0_values.append(force_0)
             force_1_values.append(force_1)
             force_2_values.append(force_2)
@@ -418,7 +427,7 @@ class Example(Platform):
         self.motion_length = 1  # 1
         self.motion_width = 1
         self.roll_yaw_x = 0.9
-        self.roll_yaw_z = 3  # 0.3
+        self.roll_yaw_z = 0.3  # 0.3
         self.pitch_x = 0.5
         self.pitch_z = 0
         self.roll = 0
