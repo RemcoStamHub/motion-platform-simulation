@@ -17,6 +17,9 @@ yaw_range = 30  # +- value degrees
 yaw_speed = 50  # +- value degrees/s
 yaw_acceleration = 250  # +- value deg/s^2
 
+angle_min = -30
+angle_max = 30
+
 length_min = 0.5
 length_max = 2
 
@@ -26,26 +29,29 @@ speed_max = 0.75
 acceleration_min = -5
 acceleration_max = 5
 
+force_min = -500
+force_max = 500
+
 fig, ((ax0, ax1, ax2, ax3), (ax4, ax5, ax6, ax7), (ax8, ax9, ax10, ax11), (ax12, ax13, ax14, ax15)) = plt.subplots(4, 4)
 fig.tight_layout(pad=0.01)
 fig.canvas.manager.set_window_title('Dynamic')
 
-ax0.set_xlim(-roll_range, roll_range)
-ax1.set_xlim(-roll_range, roll_range)
-ax2.set_xlim(-roll_range, roll_range)
-ax3.set_xlim(-roll_range, roll_range)
-ax4.set_xlim(-roll_range, roll_range)
-ax5.set_xlim(-roll_range, roll_range)
-ax6.set_xlim(-roll_range, roll_range)
-ax7.set_xlim(-roll_range, roll_range)
-ax8.set_xlim(-roll_range, roll_range)
-ax9.set_xlim(-roll_range, roll_range)
-ax10.set_xlim(-roll_range, roll_range)
-ax11.set_xlim(-roll_range, roll_range)
-ax12.set_xlim(-roll_range, roll_range)
-ax13.set_xlim(-roll_range, roll_range)
-ax14.set_xlim(-roll_range, roll_range)
-ax15.set_xlim(-roll_range, roll_range)
+ax0.set_xlim(angle_min, angle_max)
+ax1.set_xlim(angle_min, angle_max)
+ax2.set_xlim(angle_min, angle_max)
+ax3.set_xlim(angle_min, angle_max)
+ax4.set_xlim(angle_min, angle_max)
+ax5.set_xlim(angle_min, angle_max)
+ax6.set_xlim(angle_min, angle_max)
+ax7.set_xlim(angle_min, angle_max)
+ax8.set_xlim(angle_min, angle_max)
+ax9.set_xlim(angle_min, angle_max)
+ax10.set_xlim(angle_min, angle_max)
+ax11.set_xlim(angle_min, angle_max)
+ax12.set_xlim(angle_min, angle_max)
+ax13.set_xlim(angle_min, angle_max)
+ax14.set_xlim(angle_min, angle_max)
+ax15.set_xlim(angle_min, angle_max)
 
 ax0.set_ylim(length_min, length_max)
 ax1.set_ylim(length_min, length_max)
@@ -59,6 +65,10 @@ ax8.set_ylim(acceleration_min, acceleration_max)
 ax9.set_ylim(acceleration_min, acceleration_max)
 ax10.set_ylim(acceleration_min, acceleration_max)
 ax11.set_ylim(acceleration_min, acceleration_max)
+ax12.set_ylim(force_min, force_max)
+ax13.set_ylim(force_min, force_max)
+ax14.set_ylim(force_min, force_max)
+ax15.set_ylim(force_min, force_max)
 
 ax0.set_xlabel('angle (deg)')
 ax0.set_ylabel('length (m)')
