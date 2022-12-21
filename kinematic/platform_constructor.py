@@ -188,22 +188,22 @@ class Platform:
         total_speed = speed_0_absolute + speed_1_absolute + speed_2_absolute + speed_3_absolute
 
         if speed_0_absolute != 0:
-            force_0_ratio = total_speed / speed_0_absolute
+            force_0_ratio = speed_0_absolute / total_speed
         else:
             force_0_ratio = 0
 
         if speed_1_absolute != 0:
-            force_1_ratio = total_speed / speed_1_absolute
+            force_1_ratio = speed_1_absolute / total_speed
         else:
             force_1_ratio = 0
 
         if speed_2_absolute != 0:
-            force_2_ratio = total_speed / speed_2_absolute
+            force_2_ratio = speed_2_absolute / total_speed
         else:
             force_2_ratio = 0
 
         if speed_3_absolute != 0:
-            force_3_ratio = total_speed / speed_3_absolute
+            force_3_ratio = speed_3_absolute / total_speed
         else:
             force_3_ratio = 0
 
@@ -413,6 +413,147 @@ class Platform:
             force_3_values.append(force_3)
 
         return (yaw_values,
+                length_0_values, length_1_values, length_2_values, length_3_values,
+                speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+                acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values,
+                force_0_values, force_1_values, force_2_values, force_3_values)
+
+    def linear_actuator_speeds(self, x_speed, y_speed, z_speed):
+        speed_vector = np.array([x_speed, y_speed, z_speed])
+
+        actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
+        speed_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), speed_vector)
+
+        actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
+        speed_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), speed_vector)
+
+        actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
+        speed_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), speed_vector)
+
+        actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
+        speed_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), speed_vector)
+
+        return speed_0, speed_1, speed_2, speed_3
+
+    def linear_actuator_accelerations(self, x_acceleration, y_acceleration, z_acceleration):
+        acceleration_vector = np.array([x_acceleration, y_acceleration, z_acceleration])
+
+        actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
+        acceleration_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), acceleration_vector)
+
+        actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
+        acceleration_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), acceleration_vector)
+
+        actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
+        acceleration_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), acceleration_vector)
+
+        actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
+        acceleration_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), acceleration_vector)
+
+        return acceleration_0, acceleration_1, acceleration_2, acceleration_3
+
+    def linear_actuator_forces(self, x_speed, y_speed, z_speed, x_acceleration, y_acceleration, z_acceleration):
+        speed_0, speed_1, speed_2, speed_3 = self.linear_actuator_speeds(x_speed, y_speed, z_speed)
+        speed_0_absolute = np.absolute(speed_0)
+        speed_1_absolute = np.absolute(speed_1)
+        speed_2_absolute = np.absolute(speed_2)
+        speed_3_absolute = np.absolute(speed_3)
+        total_speed = speed_0_absolute + speed_1_absolute + speed_2_absolute + speed_3_absolute
+
+        if speed_0_absolute != 0:
+            force_0_ratio = speed_0_absolute / total_speed
+        else:
+            force_0_ratio = 0
+
+        if speed_1_absolute != 0:
+            force_1_ratio = speed_1_absolute / total_speed
+        else:
+            force_1_ratio = 0
+
+        if speed_2_absolute != 0:
+            force_2_ratio = speed_2_absolute / total_speed
+        else:
+            force_2_ratio = 0
+
+        if speed_3_absolute != 0:
+            force_3_ratio = speed_3_absolute / total_speed
+        else:
+            force_3_ratio = 0
+
+        acceleration_vector = np.array([x_acceleration, y_acceleration, z_acceleration])
+        load = self.load_mass * acceleration_vector
+
+        load_0 = force_0_ratio * load
+        load_1 = force_1_ratio * load
+        load_2 = force_2_ratio * load
+        load_3 = force_3_ratio * load
+
+
+        actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
+        force_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), load_0)
+
+        actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
+        force_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), load_1)
+
+        actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
+        force_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), load_2)
+
+        actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
+        force_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), load_3)
+
+        return force_0, force_1, force_2, force_3
+
+    def heave_platform_limits(self, heavemin, heavemax, heavespeed, heaveacceleration, resolution):
+        heave_values = []
+        length_0_values = []
+        length_1_values = []
+        length_2_values = []
+        length_3_values = []
+        speed_0_values = []
+        speed_1_values = []
+        speed_2_values = []
+        speed_3_values = []
+        acceleration_0_values = []
+        acceleration_1_values = []
+        acceleration_2_values = []
+        acceleration_3_values = []
+        force_0_values = []
+        force_1_values = []
+        force_2_values = []
+        force_3_values = []
+
+        for heave in np.arange(heavemin, heavemax, resolution):
+            self.heave = heave
+            self.build_system()
+            self.move_system()
+            heave_values.append(heave)
+
+            length_0, length_1, length_2, length_3 = self.actuator_lengths()
+            length_0_values.append(length_0)
+            length_1_values.append(length_1)
+            length_2_values.append(length_2)
+            length_3_values.append(length_3)
+
+            speed_0, speed_1, speed_2, speed_3 = self.linear_actuator_speeds(0, 0, heavespeed)
+            speed_0_values.append(speed_0)
+            speed_1_values.append(speed_1)
+            speed_2_values.append(speed_2)
+            speed_3_values.append(speed_3)
+
+            acceleration_0, acceleration_1, acceleration_2, acceleration_3 = self.linear_actuator_accelerations(0, 0,
+                                                                                                                heaveacceleration)
+            acceleration_0_values.append(acceleration_0)
+            acceleration_1_values.append(acceleration_1)
+            acceleration_2_values.append(acceleration_2)
+            acceleration_3_values.append(acceleration_3)
+
+            force_0, force_1, force_2, force_3 = self.linear_actuator_forces(0, 0, heavespeed, 0, 0, heaveacceleration)
+            force_0_values.append(force_0)
+            force_1_values.append(force_1)
+            force_2_values.append(force_2)
+            force_3_values.append(force_3)
+
+        return (heave_values,
                 length_0_values, length_1_values, length_2_values, length_3_values,
                 speed_0_values, speed_1_values, speed_2_values, speed_3_values,
                 acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values,

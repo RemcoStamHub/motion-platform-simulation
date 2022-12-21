@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
-import numpy as np
 
 from platform_constructor import Example
 
 step = 0.1
+heavestep = 0.01
 
 roll_range = 30  # +- value deg
 roll_speed = 50  # +- value deg/s
@@ -17,6 +17,10 @@ yaw_range = 30  # +- value degrees
 yaw_speed = 50  # +- value degrees/s
 yaw_acceleration = 250  # +- value deg/s^2
 
+heave_range = 0.14
+heave_speed = 0.3
+heave_acceleration = 5
+
 angle_min = -30
 angle_max = 30
 
@@ -29,8 +33,8 @@ speed_max = 0.75
 acceleration_min = -5
 acceleration_max = 5
 
-force_min = -500
-force_max = 500
+force_min = -100
+force_max = 100
 
 fig, ((ax0, ax1, ax2, ax3), (ax4, ax5, ax6, ax7), (ax8, ax9, ax10, ax11), (ax12, ax13, ax14, ax15)) = plt.subplots(4, 4)
 fig.tight_layout(pad=0.01)
@@ -191,9 +195,94 @@ def plot_yaw():
     ax15.plot(yaw_values, force_3_values, label=plot_label)
 
 
+def plot_heave():
+    figheave, ((bx0, bx1, bx2, bx3), (bx4, bx5, bx6, bx7), (bx8, bx9, bx10, bx11), (bx12, bx13, bx14, bx15)) = plt.subplots(
+        4, 4)
+    figheave.tight_layout(pad=0.01)
+    figheave.canvas.manager.set_window_title('Dynamic_heave')
+
+    bx0.set_xlabel('height (m)')
+    bx0.set_ylabel('length (m)')
+    bx1.set_xlabel('height (m)')
+    bx1.set_ylabel('length (m)')
+    bx2.set_xlabel('height (m)')
+    bx2.set_ylabel('length (m)')
+    bx3.set_xlabel('height (m)')
+    bx3.set_ylabel('length (m)')
+    bx4.set_xlabel('height (m)')
+    bx4.set_ylabel('speed (m/s)')
+    bx5.set_xlabel('height (m)')
+    bx5.set_ylabel('speed (m/s)')
+    bx6.set_xlabel('height (m)')
+    bx6.set_ylabel('speed (m/s)')
+    bx7.set_xlabel('height (m)')
+    bx7.set_ylabel('speed (m/s)')
+    bx8.set_xlabel('height (m)')
+    bx8.set_ylabel('acceleration (m/s^2)')
+    bx9.set_xlabel('height (m)')
+    bx9.set_ylabel('acceleration (m/s^2)')
+    bx10.set_xlabel('height (m)')
+    bx10.set_ylabel('acceleration (m/s^2)')
+    bx11.set_xlabel('height (m)')
+    bx11.set_ylabel('acceleration (m/s^2)')
+    bx12.set_xlabel('height (m)')
+    bx12.set_ylabel('dynamic load (N)')
+    bx13.set_xlabel('height (m)')
+    bx13.set_ylabel('dynamic load (N)')
+    bx14.set_xlabel('height (m)')
+    bx14.set_ylabel('dynamic load (N)')
+    bx15.set_xlabel('height (m)')
+    bx15.set_ylabel('dynamic load (N)')
+    
+    heave_platform = Example()
+    heave_centre = heave_platform.heave
+    (heave_values,
+     length_0_values, length_1_values, length_2_values, length_3_values,
+     speed_0_values, speed_1_values, speed_2_values, speed_3_values,
+     acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values,
+     force_0_values, force_1_values, force_2_values, force_3_values
+     ) = heave_platform.heave_platform_limits(-heave_range + heave_centre, heave_range + heave_centre, heave_speed, heave_acceleration, heavestep)
+    
+    plot_label = 'Heave'
+    bx0.plot(heave_values, length_0_values, label=plot_label)
+    bx1.plot(heave_values, length_1_values, label=plot_label)
+    bx2.plot(heave_values, length_2_values, label=plot_label)
+    bx3.plot(heave_values, length_3_values, label=plot_label)
+    bx4.plot(heave_values, speed_0_values, label=plot_label)
+    bx5.plot(heave_values, speed_1_values, label=plot_label)
+    bx6.plot(heave_values, speed_2_values, label=plot_label)
+    bx7.plot(heave_values, speed_3_values, label=plot_label)
+    bx8.plot(heave_values, acceleration_0_values, label=plot_label)
+    bx9.plot(heave_values, acceleration_1_values, label=plot_label)
+    bx10.plot(heave_values, acceleration_2_values, label=plot_label)
+    bx11.plot(heave_values, acceleration_3_values, label=plot_label)
+    bx12.plot(heave_values, force_0_values, label=plot_label)
+    bx13.plot(heave_values, force_1_values, label=plot_label)
+    bx14.plot(heave_values, force_2_values, label=plot_label)
+    bx15.plot(heave_values, force_3_values, label=plot_label)
+
+    bx0.legend()
+    bx1.legend()
+    bx2.legend()
+    bx3.legend()
+    bx4.legend()
+    bx5.legend()
+    bx6.legend()
+    bx7.legend()
+    bx8.legend()
+    bx9.legend()
+    bx10.legend()
+    bx11.legend()
+    bx12.legend()
+    bx13.legend()
+    bx14.legend()
+    bx15.legend()
+
+
 plot_roll()
 plot_pitch()
 plot_yaw()
+plot_heave()
 
 ax0.legend()
 ax1.legend()
@@ -207,5 +296,9 @@ ax8.legend()
 ax9.legend()
 ax10.legend()
 ax11.legend()
+ax12.legend()
+ax13.legend()
+ax14.legend()
+ax15.legend()
 
 plt.show()
