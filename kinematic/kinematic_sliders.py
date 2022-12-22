@@ -227,6 +227,28 @@ def update(val):
             [new_platform.platform_point_2_reference_frame[2], new_platform.platform_point_3_reference_frame[2]],
             color='green')
 
+    ax.plot([new_platform.platform_point_0_reference_frame[0], new_platform.platform_point_3_reference_frame[0]],
+            [new_platform.platform_point_0_reference_frame[1], new_platform.platform_point_3_reference_frame[1]],
+            [new_platform.platform_point_0_reference_frame[2], new_platform.platform_point_3_reference_frame[2]],
+            color='magenta')
+
+    ax.plot([new_platform.platform_point_0_reference_frame[0], new_platform.roll_yaw_point_reference_frame[0]],
+            [new_platform.platform_point_0_reference_frame[1], new_platform.roll_yaw_point_reference_frame[1]],
+            [new_platform.platform_point_0_reference_frame[2], new_platform.roll_yaw_point_reference_frame[2]],
+            color='cyan')
+    ax.plot([new_platform.platform_point_1_reference_frame[0], new_platform.roll_yaw_point_reference_frame[0]],
+            [new_platform.platform_point_1_reference_frame[1], new_platform.roll_yaw_point_reference_frame[1]],
+            [new_platform.platform_point_1_reference_frame[2], new_platform.roll_yaw_point_reference_frame[2]],
+            color='cyan')
+    ax.plot([new_platform.platform_point_2_reference_frame[0], new_platform.roll_yaw_point_reference_frame[0]],
+            [new_platform.platform_point_2_reference_frame[1], new_platform.roll_yaw_point_reference_frame[1]],
+            [new_platform.platform_point_2_reference_frame[2], new_platform.roll_yaw_point_reference_frame[2]],
+            color='cyan')
+    ax.plot([new_platform.platform_point_3_reference_frame[0], new_platform.roll_yaw_point_reference_frame[0]],
+            [new_platform.platform_point_3_reference_frame[1], new_platform.roll_yaw_point_reference_frame[1]],
+            [new_platform.platform_point_3_reference_frame[2], new_platform.roll_yaw_point_reference_frame[2]],
+            color='cyan')
+
     at.axis('off')
     at.table(cellText=np.array([[("{:.3f}".format(l_0))],
                                 [("{:.3f}".format(l_1))],

@@ -99,8 +99,8 @@ class Platform:
         self.ground_point_3_reference_frame = np.array([self.ground_length, -self.ground_width / 2,
                                                         self.ground_height])
 
-        self.platform_point_0_motion_frame = np.array([0, 0, 0])
-        self.platform_point_1_motion_frame = np.array([0, 0, 0])
+        self.platform_point_0_motion_frame = np.array([0, 0.05, 0])
+        self.platform_point_1_motion_frame = np.array([0, -0.05, 0])
 
         self.platform_point_2_motion_frame = np.array([self.motion_length, self.motion_width / 2, 0])
         self.platform_point_3_motion_frame = np.array([self.motion_length, -self.motion_width / 2, 0])
