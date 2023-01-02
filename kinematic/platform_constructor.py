@@ -33,12 +33,14 @@ class Platform:
         self.platform_point_3_motion_frame = []
         self.pitch_point_motion_frame = []
         self.roll_yaw_point_motion_frame = []
+        self.gravity_point_motion_frame = []
         self.platform_point_0_reference_frame = np.array([])
         self.platform_point_1_reference_frame = np.array([])
         self.platform_point_2_reference_frame = np.array([])
         self.platform_point_3_reference_frame = np.array([])
         self.pitch_point_reference_frame = []
         self.roll_yaw_point_reference_frame = []
+        self.gravity_point_reference_frame = []
         self.load_length = load_length
         self.load_width = load_width
         self.load_height = load_height
@@ -99,14 +101,16 @@ class Platform:
         self.ground_point_3_reference_frame = np.array([self.ground_length, -self.ground_width / 2,
                                                         self.ground_height])
 
-        self.platform_point_0_motion_frame = np.array([0, 0.05, 0])
-        self.platform_point_1_motion_frame = np.array([0, -0.05, 0])
+        self.platform_point_0_motion_frame = np.array([0, 0, 0])
+        self.platform_point_1_motion_frame = np.array([0, 0, 0])
 
         self.platform_point_2_motion_frame = np.array([self.motion_length, self.motion_width / 2, 0])
         self.platform_point_3_motion_frame = np.array([self.motion_length, -self.motion_width / 2, 0])
 
         self.pitch_point_motion_frame = np.array([self.pitch_x, 0, self.pitch_z])
         self.roll_yaw_point_motion_frame = np.array([self.roll_yaw_x, 0, self.roll_yaw_z])
+
+        self.gravity_point_motion_frame = np.array([self.motion_length/2, 0, -0.1])
 
     def move_system(self):
         self.platform_point_0_reference_frame = self.calculate_position(self.platform_point_0_motion_frame)
@@ -115,6 +119,9 @@ class Platform:
         self.platform_point_3_reference_frame = self.calculate_position(self.platform_point_3_motion_frame)
         self.pitch_point_reference_frame = self.calculate_position(self.pitch_point_motion_frame)
         self.roll_yaw_point_reference_frame = self.calculate_position(self.roll_yaw_point_motion_frame)
+        self.gravity_point_reference_frame = self.calculate_position(self.gravity_point_motion_frame)
+        # print(self.platform_point_0_reference_frame, self.platform_point_1_reference_frame,
+        #       self.platform_point_2_reference_frame, self.platform_point_3_reference_frame)
 
     def actuator_lengths(self):
         length_0 = np.linalg.norm(self.platform_point_0_reference_frame - self.ground_point_0_reference_frame)
@@ -488,7 +495,6 @@ class Platform:
         load_2 = force_2_ratio * load
         load_3 = force_3_ratio * load
 
-
         actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
         force_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), load_0)
 
@@ -540,8 +546,8 @@ class Platform:
             speed_2_values.append(speed_2)
             speed_3_values.append(speed_3)
 
-            acceleration_0, acceleration_1, acceleration_2, acceleration_3 = self.linear_actuator_accelerations(0, 0,
-                                                                                                                heaveacceleration)
+            (acceleration_0, acceleration_1,
+             acceleration_2, acceleration_3) = self.linear_actuator_accelerations(0, 0, heaveacceleration)
             acceleration_0_values.append(acceleration_0)
             acceleration_1_values.append(acceleration_1)
             acceleration_2_values.append(acceleration_2)
@@ -574,7 +580,7 @@ class Example(Platform):
         self.roll = 0
         self.pitch = 0
         self.yaw = 0
-        self.heave = 1
+        self.heave = 0.9
         self.ground_point_0_reference_frame = []
         self.ground_point_1_reference_frame = []
         self.ground_point_2_reference_frame = []
@@ -585,12 +591,14 @@ class Example(Platform):
         self.platform_point_3_motion_frame = []
         self.pitch_point_motion_frame = []
         self.roll_yaw_point_motion_frame = []
+        self.gravity_point_motion_frame = []
         self.platform_point_0_reference_frame = []
         self.platform_point_1_reference_frame = []
         self.platform_point_2_reference_frame = []
         self.platform_point_3_reference_frame = []
         self.pitch_point_reference_frame = []
         self.roll_yaw_point_reference_frame = []
+        self.gravity_point_reference_frame = []
         self.load_length = 1
         self.load_width = 1
         self.load_height = 1
@@ -598,3 +606,4 @@ class Example(Platform):
         self.load_y = 0
         self.load_z = 0.5
         self.load_mass = 300
+
