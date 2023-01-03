@@ -5,15 +5,15 @@ from platform_constructor import Example
 step = 0.1
 heavestep = 0.01
 
-roll_range = 30  # +- value deg
+roll_range = 20  # +- value deg
 roll_speed = 50  # +- value deg/s
 roll_acceleration = 250  # +- value deg/s^2
 
-pitch_range = 30  # +- value degrees
+pitch_range = 20  # +- value degrees
 pitch_speed = 50  # +- value degrees/s
 pitch_acceleration = 250  # +- value deg/s^2
 
-yaw_range = 30  # +- value degrees
+yaw_range = 20  # +- value degrees
 yaw_speed = 50  # +- value degrees/s
 yaw_acceleration = 250  # +- value deg/s^2
 
@@ -21,8 +21,8 @@ heave_range = 0.14
 heave_speed = 0.3
 heave_acceleration = 5
 
-angle_min = -30
-angle_max = 30
+angle_min = -20
+angle_max = 20
 
 length_min = 0.5
 length_max = 2
@@ -33,11 +33,11 @@ speed_max = 0.75
 acceleration_min = -5
 acceleration_max = 5
 
-force_min = -100
-force_max = 1500
+force_min = 0
+force_max = 1000
 
 fig, ((ax0, ax1, ax2, ax3), (ax4, ax5, ax6, ax7), (ax8, ax9, ax10, ax11), (ax12, ax13, ax14, ax15)) = plt.subplots(4, 4)
-fig.tight_layout(pad=0.01)
+fig.tight_layout(pad=0.3)
 fig.canvas.manager.set_window_title('Dynamic')
 
 ax0.set_xlim(angle_min, angle_max)
@@ -196,10 +196,61 @@ def plot_yaw():
 
 
 def plot_heave():
-    figheave, ((bx0, bx1, bx2, bx3), (bx4, bx5, bx6, bx7), (bx8, bx9, bx10, bx11), (bx12, bx13, bx14, bx15)) = plt.subplots(
-        4, 4)
-    figheave.tight_layout(pad=0.01)
+    heave_height_min = 0.9 - heave_range
+    heave_height_max = 0.9 + heave_range
+
+    heave_length_min = 0.5
+    heave_length_max = 2
+
+    heave_speed_min = -0.75
+    heave_speed_max = 0.75
+
+    heave_acceleration_min = -4
+    heave_acceleration_max = 6
+
+    heave_force_min = -100
+    heave_force_max = 1500
+
+    figheave, ((bx0, bx1, bx2, bx3),
+               (bx4, bx5, bx6, bx7),
+               (bx8, bx9, bx10, bx11),
+               (bx12, bx13, bx14, bx15)) = plt.subplots(4, 4)
+    figheave.tight_layout(pad=0.3)
     figheave.canvas.manager.set_window_title('Dynamic_heave')
+
+    bx0.set_xlim(heave_height_min, heave_height_max)
+    bx1.set_xlim(heave_height_min, heave_height_max)
+    bx2.set_xlim(heave_height_min, heave_height_max)
+    bx3.set_xlim(heave_height_min, heave_height_max)
+    bx4.set_xlim(heave_height_min, heave_height_max)
+    bx5.set_xlim(heave_height_min, heave_height_max)
+    bx6.set_xlim(heave_height_min, heave_height_max)
+    bx7.set_xlim(heave_height_min, heave_height_max)
+    bx8.set_xlim(heave_height_min, heave_height_max)
+    bx9.set_xlim(heave_height_min, heave_height_max)
+    bx10.set_xlim(heave_height_min, heave_height_max)
+    bx11.set_xlim(heave_height_min, heave_height_max)
+    bx12.set_xlim(heave_height_min, heave_height_max)
+    bx13.set_xlim(heave_height_min, heave_height_max)
+    bx14.set_xlim(heave_height_min, heave_height_max)
+    bx15.set_xlim(heave_height_min, heave_height_max)
+
+    bx0.set_ylim(heave_length_min, heave_length_max)
+    bx1.set_ylim(heave_length_min, heave_length_max)
+    bx2.set_ylim(heave_length_min, heave_length_max)
+    bx3.set_ylim(heave_length_min, heave_length_max)
+    bx4.set_ylim(heave_speed_min, heave_speed_max)
+    bx5.set_ylim(heave_speed_min, heave_speed_max)
+    bx6.set_ylim(heave_speed_min, heave_speed_max)
+    bx7.set_ylim(heave_speed_min, heave_speed_max)
+    bx8.set_ylim(heave_acceleration_min, heave_acceleration_max)
+    bx9.set_ylim(heave_acceleration_min, heave_acceleration_max)
+    bx10.set_ylim(heave_acceleration_min, heave_acceleration_max)
+    bx11.set_ylim(heave_acceleration_min, heave_acceleration_max)
+    bx12.set_ylim(heave_force_min, heave_force_max)
+    bx13.set_ylim(heave_force_min, heave_force_max)
+    bx14.set_ylim(heave_force_min, heave_force_max)
+    bx15.set_ylim(heave_force_min, heave_force_max)
 
     bx0.set_xlabel('height (m)')
     bx0.set_ylabel('length (m)')
@@ -226,13 +277,13 @@ def plot_heave():
     bx11.set_xlabel('height (m)')
     bx11.set_ylabel('acceleration (m/s^2)')
     bx12.set_xlabel('height (m)')
-    bx12.set_ylabel('dynamic load (N)')
+    bx12.set_ylabel('static load (N)')
     bx13.set_xlabel('height (m)')
-    bx13.set_ylabel('dynamic load (N)')
+    bx13.set_ylabel('static load (N)')
     bx14.set_xlabel('height (m)')
-    bx14.set_ylabel('dynamic load (N)')
+    bx14.set_ylabel('static load (N)')
     bx15.set_xlabel('height (m)')
-    bx15.set_ylabel('dynamic load (N)')
+    bx15.set_ylabel('static load (N)')
     
     heave_platform = Example()
     heave_centre = heave_platform.heave
@@ -241,7 +292,8 @@ def plot_heave():
      speed_0_values, speed_1_values, speed_2_values, speed_3_values,
      acceleration_0_values, acceleration_1_values, acceleration_2_values, acceleration_3_values,
      force_0_values, force_1_values, force_2_values, force_3_values
-     ) = heave_platform.heave_platform_limits(-heave_range + heave_centre, heave_range + heave_centre, heave_speed, heave_acceleration, heavestep)
+     ) = heave_platform.heave_platform_limits(-heave_range + heave_centre,
+                                              heave_range + heave_centre, heave_speed, heave_acceleration, heavestep)
     
     plot_label = 'Heave'
     bx0.plot(heave_values, length_0_values, label=plot_label)

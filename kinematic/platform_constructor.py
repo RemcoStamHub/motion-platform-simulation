@@ -111,7 +111,7 @@ class Platform:
         self.pitch_point_motion_frame = np.array([self.pitch_x, 0, self.pitch_z])
         self.roll_yaw_point_motion_frame = np.array([self.roll_yaw_x, 0, self.roll_yaw_z])
 
-        self.gravity_point_motion_frame = np.array([self.motion_length / 2, 0, -0.1])
+        self.gravity_point_motion_frame = np.array([self.motion_length / 2, self.load_y, self.load_z])
 
     def move_system(self):
         self.platform_point_0_reference_frame = self.calculate_position(self.platform_point_0_motion_frame)
@@ -468,10 +468,10 @@ class Example(Platform):
         self.ground_height = 0  # 0
         self.motion_length = 1  # 1
         self.motion_width = 1
-        self.roll_yaw_x = 0.6
-        self.roll_yaw_z = 0.3  # 0.3
+        self.roll_yaw_x = 0.7
+        self.roll_yaw_z = -0.2  # 0.3
         self.pitch_x = 0.5
-        self.pitch_z = 0
+        self.pitch_z = 0.2
         self.roll = 0
         self.pitch = 0
         self.yaw = 0
@@ -499,5 +499,5 @@ class Example(Platform):
         self.load_height = 1
         self.load_x = 0.5
         self.load_y = 0
-        self.load_z = 0.5
-        self.load_mass = 300
+        self.load_z = -0.1
+        self.load_mass = 200
