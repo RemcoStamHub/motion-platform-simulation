@@ -34,7 +34,7 @@ acceleration_min = -5
 acceleration_max = 5
 
 force_min = -100
-force_max = 100
+force_max = 1500
 
 fig, ((ax0, ax1, ax2, ax3), (ax4, ax5, ax6, ax7), (ax8, ax9, ax10, ax11), (ax12, ax13, ax14, ax15)) = plt.subplots(4, 4)
 fig.tight_layout(pad=0.01)
@@ -99,13 +99,13 @@ ax10.set_ylabel('acceleration (m/s^2)')
 ax11.set_xlabel('angle (deg)')
 ax11.set_ylabel('acceleration (m/s^2)')
 ax12.set_xlabel('angle (deg)')
-ax12.set_ylabel('dynamic load (N)')
+ax12.set_ylabel('static load (N)')
 ax13.set_xlabel('angle (deg)')
-ax13.set_ylabel('dynamic load (N)')
+ax13.set_ylabel('static load (N)')
 ax14.set_xlabel('angle (deg)')
-ax14.set_ylabel('dynamic load (N)')
+ax14.set_ylabel('static load (N)')
 ax15.set_xlabel('angle (deg)')
-ax15.set_ylabel('dynamic load (N)')
+ax15.set_ylabel('static load (N)')
 
 
 def plot_roll():

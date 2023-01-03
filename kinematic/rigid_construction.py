@@ -82,18 +82,18 @@ def construction_matrix(g0, g1, g2, g3, p0, pz, p2, p3, pr):
     return matrix
 
 
-a_g0 = np.array([0, 0.6, 0])
-a_g1 = np.array([0, -0.6, 0])
-a_g2 = np.array([1, 0.6, 0])
-a_g3 = np.array([1, -0.6, 0])
-a_p0 = np.array([0, 0, 1])
-a_pz = np.array([0.5, 0, 0.9])
-a_p2 = np.array([1, 0.5, 1])
-a_p3 = np.array([1, -0.5, 1])
-a_pr = np.array([0.9, 0, 1.3])
-a_matrix = construction_matrix(a_g0, a_g1, a_g2, a_g3, a_p0, a_pz, a_p2, a_p3, a_pr)
-gz = -250*9.81
-f = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gz, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-X = np.dot(np.linalg.inv(a_matrix), f)
-print(X)
+# a_g0 = np.array([0, 0.6, 0])
+# a_g1 = np.array([0, -0.6, 0])
+# a_g2 = np.array([1, 0.6, 0])
+# a_g3 = np.array([1, -0.6, 0])
+# a_p0 = np.array([0, 0, 1])
+# a_pz = np.array([0.5, 0, 0.9])
+# a_p2 = np.array([1, 0.5, 1])
+# a_p3 = np.array([1, -0.5, 1])
+# a_pr = np.array([0.9, 0, 1.3])
+# a_matrix = construction_matrix(a_g0, a_g1, a_g2, a_g3, a_p0, a_pz, a_p2, a_p3, a_pr)
+# gz = -250 * 9.81
+# f = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, gz, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+# X = np.dot(np.linalg.inv(a_matrix), f)
+# print(X)
 

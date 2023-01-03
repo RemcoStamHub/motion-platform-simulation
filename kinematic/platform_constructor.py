@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import sin, cos
+from rigid_construction import construction_matrix
 
 
 class Platform:
@@ -110,7 +111,7 @@ class Platform:
         self.pitch_point_motion_frame = np.array([self.pitch_x, 0, self.pitch_z])
         self.roll_yaw_point_motion_frame = np.array([self.roll_yaw_x, 0, self.roll_yaw_z])
 
-        self.gravity_point_motion_frame = np.array([self.motion_length/2, 0, -0.1])
+        self.gravity_point_motion_frame = np.array([self.motion_length / 2, 0, -0.1])
 
     def move_system(self):
         self.platform_point_0_reference_frame = self.calculate_position(self.platform_point_0_motion_frame)
@@ -184,69 +185,16 @@ class Platform:
 
         return acceleration_0, acceleration_1, acceleration_2, acceleration_3
 
-    def actuator_forces(self, rollspeed, pitchspeed, yawspeed,
-                        rollacceleration, pitchacceleration, yawacceleration,
-                        rotationpoint):
-        speed_0, speed_1, speed_2, speed_3 = self.actuator_speeds(rollspeed, pitchspeed, yawspeed, rotationpoint)
-        speed_0_absolute = np.absolute(speed_0)
-        speed_1_absolute = np.absolute(speed_1)
-        speed_2_absolute = np.absolute(speed_2)
-        speed_3_absolute = np.absolute(speed_3)
-        total_speed = speed_0_absolute + speed_1_absolute + speed_2_absolute + speed_3_absolute
-
-        if speed_0_absolute != 0:
-            force_0_ratio = speed_0_absolute / total_speed
-        else:
-            force_0_ratio = 0
-
-        if speed_1_absolute != 0:
-            force_1_ratio = speed_1_absolute / total_speed
-        else:
-            force_1_ratio = 0
-
-        if speed_2_absolute != 0:
-            force_2_ratio = speed_2_absolute / total_speed
-        else:
-            force_2_ratio = 0
-
-        if speed_3_absolute != 0:
-            force_3_ratio = speed_3_absolute / total_speed
-        else:
-            force_3_ratio = 0
-
-        roll_inertia = (1 / 12) * self.load_mass * (np.square(self.load_height) + np.square(self.load_width))
-        pitch_inertia = (1 / 12) * self.load_mass * (np.square(self.load_height) + np.square(self.load_length))
-        yaw_inertia = (1 / 12) * self.load_mass * (np.square(self.load_length) + np.square(self.load_width))
-        torque = np.array([roll_inertia * np.deg2rad(rollacceleration),
-                           pitch_inertia * np.deg2rad(pitchacceleration),
-                           yaw_inertia * np.deg2rad(yawacceleration)])
-
-        moment_0 = force_0_ratio * torque
-        moment_1 = force_1_ratio * torque
-        moment_2 = force_2_ratio * torque
-        moment_3 = force_3_ratio * torque
-
-        radius_0 = self.platform_point_0_reference_frame - rotationpoint
-        force_point_0 = np.cross(moment_0, radius_0)
-        actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
-        force_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), force_point_0)
-
-        radius_1 = self.platform_point_1_reference_frame - rotationpoint
-        force_point_1 = np.cross(moment_1, radius_1)
-        actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
-        force_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), force_point_1)
-
-        radius_2 = self.platform_point_2_reference_frame - rotationpoint
-        force_point_2 = np.cross(moment_2, radius_2)
-        actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
-        force_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), force_point_2)
-
-        radius_3 = self.platform_point_3_reference_frame - rotationpoint
-        force_point_3 = np.cross(moment_3, radius_3)
-        actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
-        force_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), force_point_3)
-
-        return force_0, force_1, force_2, force_3
+    def actuator_forces(self):
+        a = construction_matrix(self.ground_point_0_reference_frame, self.ground_point_1_reference_frame,
+                                self.ground_point_2_reference_frame, self.ground_point_3_reference_frame,
+                                self.platform_point_0_reference_frame, self.gravity_point_reference_frame,
+                                self.platform_point_2_reference_frame, self.platform_point_3_reference_frame,
+                                self.roll_yaw_point_reference_frame)
+        fz = self.load_mass * -9.81
+        f = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, fz, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        x = np.dot(np.linalg.inv(a), f)
+        return x[0], x[1], x[2], x[3]
 
     def roll_platform_limits(self, rollmin, rollmax, rollspeed, rollacceleration, resolution):
         roll_values = []
@@ -294,8 +242,7 @@ class Platform:
             acceleration_2_values.append(acceleration_2)
             acceleration_3_values.append(acceleration_3)
 
-            force_0, force_1, force_2, force_3 = self.actuator_forces(rollspeed, 0, 0, rollacceleration, 0, 0,
-                                                                      self.roll_yaw_point_reference_frame)
+            force_0, force_1, force_2, force_3 = self.actuator_forces()
             force_0_values.append(force_0)
             force_1_values.append(force_1)
             force_2_values.append(force_2)
@@ -353,8 +300,7 @@ class Platform:
             acceleration_2_values.append(acceleration_2)
             acceleration_3_values.append(acceleration_3)
 
-            force_0, force_1, force_2, force_3 = self.actuator_forces(0, pitchspeed, 0, 0, pitchacceleration, 0,
-                                                                      self.pitch_point_reference_frame)
+            force_0, force_1, force_2, force_3 = self.actuator_forces()
             force_0_values.append(force_0)
             force_1_values.append(force_1)
             force_2_values.append(force_2)
@@ -412,8 +358,7 @@ class Platform:
             acceleration_2_values.append(acceleration_2)
             acceleration_3_values.append(acceleration_3)
 
-            force_0, force_1, force_2, force_3 = self.actuator_forces(0, 0, yawspeed, 0, 0, yawacceleration,
-                                                                      self.roll_yaw_point_reference_frame)
+            force_0, force_1, force_2, force_3 = self.actuator_forces()
             force_0_values.append(force_0)
             force_1_values.append(force_1)
             force_2_values.append(force_2)
@@ -459,56 +404,6 @@ class Platform:
 
         return acceleration_0, acceleration_1, acceleration_2, acceleration_3
 
-    def linear_actuator_forces(self, x_speed, y_speed, z_speed, x_acceleration, y_acceleration, z_acceleration):
-        speed_0, speed_1, speed_2, speed_3 = self.linear_actuator_speeds(x_speed, y_speed, z_speed)
-        speed_0_absolute = np.absolute(speed_0)
-        speed_1_absolute = np.absolute(speed_1)
-        speed_2_absolute = np.absolute(speed_2)
-        speed_3_absolute = np.absolute(speed_3)
-        total_speed = speed_0_absolute + speed_1_absolute + speed_2_absolute + speed_3_absolute
-
-        if speed_0_absolute != 0:
-            force_0_ratio = speed_0_absolute / total_speed
-        else:
-            force_0_ratio = 0
-
-        if speed_1_absolute != 0:
-            force_1_ratio = speed_1_absolute / total_speed
-        else:
-            force_1_ratio = 0
-
-        if speed_2_absolute != 0:
-            force_2_ratio = speed_2_absolute / total_speed
-        else:
-            force_2_ratio = 0
-
-        if speed_3_absolute != 0:
-            force_3_ratio = speed_3_absolute / total_speed
-        else:
-            force_3_ratio = 0
-
-        acceleration_vector = np.array([x_acceleration, y_acceleration, z_acceleration])
-        load = self.load_mass * acceleration_vector
-
-        load_0 = force_0_ratio * load
-        load_1 = force_1_ratio * load
-        load_2 = force_2_ratio * load
-        load_3 = force_3_ratio * load
-
-        actuator_0 = self.platform_point_0_reference_frame - self.ground_point_0_reference_frame
-        force_0 = np.dot(actuator_0 / np.linalg.norm(actuator_0), load_0)
-
-        actuator_1 = self.platform_point_1_reference_frame - self.ground_point_1_reference_frame
-        force_1 = np.dot(actuator_1 / np.linalg.norm(actuator_1), load_1)
-
-        actuator_2 = self.platform_point_2_reference_frame - self.ground_point_2_reference_frame
-        force_2 = np.dot(actuator_2 / np.linalg.norm(actuator_2), load_2)
-
-        actuator_3 = self.platform_point_3_reference_frame - self.ground_point_3_reference_frame
-        force_3 = np.dot(actuator_3 / np.linalg.norm(actuator_3), load_3)
-
-        return force_0, force_1, force_2, force_3
-
     def heave_platform_limits(self, heavemin, heavemax, heavespeed, heaveacceleration, resolution):
         heave_values = []
         length_0_values = []
@@ -553,7 +448,7 @@ class Platform:
             acceleration_2_values.append(acceleration_2)
             acceleration_3_values.append(acceleration_3)
 
-            force_0, force_1, force_2, force_3 = self.linear_actuator_forces(0, 0, heavespeed, 0, 0, heaveacceleration)
+            force_0, force_1, force_2, force_3 = self.actuator_forces()
             force_0_values.append(force_0)
             force_1_values.append(force_1)
             force_2_values.append(force_2)
@@ -573,7 +468,7 @@ class Example(Platform):
         self.ground_height = 0  # 0
         self.motion_length = 1  # 1
         self.motion_width = 1
-        self.roll_yaw_x = 0.9
+        self.roll_yaw_x = 0.6
         self.roll_yaw_z = 0.3  # 0.3
         self.pitch_x = 0.5
         self.pitch_z = 0
@@ -606,4 +501,3 @@ class Example(Platform):
         self.load_y = 0
         self.load_z = 0.5
         self.load_mass = 300
-
